@@ -1,0 +1,309 @@
+#:kivy 2.0.0
+
+<RoundedButton@Button>:
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (0.2, 0.6, 0.9, 1) if self.state == 'normal' else (0.1, 0.5, 0.8, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
+
+<ActivityCard@BoxLayout>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(100)
+    padding: dp(10)
+    spacing: dp(5)
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(10),]
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+        
+        BoxLayout:
+            size_hint: 1, 0.15
+            Label:
+                text: 'Zenith'
+                font_size: dp(24)
+                bold: True
+                color: 0.2, 0.2, 0.2, 1
+        
+        Label:
+            id: recommendation_label
+            text: "Cargando recomendaciones..."
+            size_hint: 1, 0.1
+            color: 0.2, 0.2, 0.2, 1
+            halign: 'left'
+            valign: 'middle'
+            text_size: self.size
+        
+        ScrollView:
+            size_hint: 1, 0.65
+            GridLayout:
+                id: activities_container
+                cols: 1
+                spacing: dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            spacing: dp(10)
+            
+            RoundedButton:
+                text: "+"
+                font_size: dp(20)
+                size_hint: 0.2, 1
+                on_release: root.go_to_add_activity()
+            
+            RoundedButton:
+                text: "Horario"
+                size_hint: 0.4, 1
+                on_release: root.go_to_schedule()
+            
+            RoundedButton:
+                text: "Perfil"
+                size_hint: 0.4, 1
+                on_release: root.go_to_profile()
+
+<AddActivityScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+        
+        Label:
+            id: screen_title
+            text: 'Añadir Actividad'
+            font_size: dp(20)
+            bold: True
+            size_hint: 1, 0.1
+            color: 0.2, 0.2, 0.2, 1
+        
+        GridLayout:
+            cols: 1
+            spacing: dp(15)
+            size_hint: 1, 0.8
+            
+            Label:
+                text: 'Título'
+                halign: 'left'
+                size_hint: 1, 0.1
+                color: 0.2, 0.2, 0.2, 1
+            
+            TextInput:
+                id: title_input
+                multiline: False
+                size_hint: 1, 0.1
+            
+            Label:
+                text: 'Descripción'
+                halign: 'left'
+                size_hint: 1, 0.1
+                color: 0.2, 0.2, 0.2, 1
+            
+            TextInput:
+                id: description_input
+                multiline: True
+                size_hint: 1, 0.2
+            
+            Label:
+                text: 'Hora de inicio'
+                halign: 'left'
+                size_hint: 1, 0.1
+                color: 0.2, 0.2, 0.2, 1
+            
+            TextInput:
+                id: start_time_input
+                multiline: False
+                size_hint: 1, 0.1
+                hint_text: 'HH:MM'
+            
+            Label:
+                text: 'Hora de fin'
+                halign: 'left'
+                size_hint: 1, 0.1
+                color: 0.2, 0.2, 0.2, 1
+            
+            TextInput:
+                id: end_time_input
+                multiline: False
+                size_hint: 1, 0.1
+                hint_text: 'HH:MM'
+            
+            Label:
+                text: 'Prioridad'
+                halign: 'left'
+                size_hint: 1, 0.1
+                color: 0.2, 0.2, 0.2, 1
+            
+            Spinner:
+                id: priority_spinner
+                text: 'Media'
+                values: 'Alta', 'Media', 'Baja'
+                size_hint: 1, 0.1
+                background_color: 0.2, 0.6, 0.9, 1
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            spacing: dp(10)
+            
+            Button:
+                text: 'Cancelar'
+                size_hint: 0.5, 1
+                background_color: 0.7, 0.7, 0.7, 1
+                on_release: root.cancel()
+            
+            Button:
+                id: save_button
+                text: 'Guardar'
+                size_hint: 0.5, 1
+                background_color: 0.2, 0.6, 0.9, 1
+                on_release: root.save_activity()
+
+<ScheduleScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            Label:
+                text: 'Tu Horario'
+                font_size: dp(20)
+                bold: True
+                color: 0.2, 0.2, 0.2, 1
+        
+        ScrollView:
+            size_hint: 1, 0.8
+            GridLayout:
+                id: schedule_container
+                cols: 1
+                spacing: dp(5)
+                size_hint_y: None
+                height: self.minimum_height
+        
+        RoundedButton:
+            text: 'Volver'
+            size_hint: 1, 0.1
+            on_release: root.go_back()
+
+<ProfileScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            Label:
+                text: 'Tu Perfil'
+                font_size: dp(20)
+                bold: True
+                color: 0.2, 0.2, 0.2, 1
+        
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 0.8
+            spacing: dp(15)
+            
+            BoxLayout:
+                size_hint: 1, 0.3
+                padding: dp(10)
+                # Widget personalizado para el avatar
+                Widget:
+                    id: avatar
+                    size_hint: None, None
+                    size: dp(100), dp(100)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    canvas:
+                        Color:
+                            rgba: 0.29, 0.56, 0.89, 1  # RGB para #4a90e2
+                        Ellipse:
+                            pos: self.center_x - dp(25), self.center_y + dp(10)
+                            size: dp(50), dp(50)
+                        Rectangle:
+                            pos: self.center_x - dp(40), self.center_y - dp(50)
+                            size: dp(80), dp(60)
+            
+            GridLayout:
+                cols: 2
+                spacing: dp(10)
+                size_hint: 1, 0.5
+                
+                Label:
+                    text: 'Nombre:'
+                    halign: 'right'
+                    color: 0.2, 0.2, 0.2, 1
+                
+                TextInput:
+                    id: name_input
+                    text: 'Usuario'
+                    multiline: False
+                
+                Label:
+                    text: 'Email:'
+                    halign: 'right'
+                    color: 0.2, 0.2, 0.2, 1
+                
+                TextInput:
+                    id: email_input
+                    text: 'usuario@ejemplo.com'
+                    multiline: False
+                
+                Label:
+                    text: 'Preferencias:'
+                    halign: 'right'
+                    color: 0.2, 0.2, 0.2, 1
+                
+                TextInput:
+                    id: preferences_input
+                    text: 'Tema claro'
+                    multiline: False
+            
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 0.2
+                spacing: dp(5)
+                
+                Label:
+                    text: 'Estadísticas'
+                    font_size: dp(18)
+                    bold: True
+                    color: 0.2, 0.2, 0.2, 1
+                
+                Label:
+                    id: total_activities_label
+                    text: 'Actividades totales: 0'
+                    color: 0.2, 0.2, 0.2, 1
+                
+                Label:
+                    id: completed_activities_label
+                    text: 'Actividades completadas: 0'
+                    color: 0.2, 0.2, 0.2, 1
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            spacing: dp(10)
+            
+            RoundedButton:
+                text: 'Guardar'
+                size_hint: 0.5, 1
+                on_release: root.save_profile()
+            
+            Button:
+                text: 'Volver'
+                size_hint: 0.5, 1
+                background_color: 0.7, 0.7, 0.7, 1
+                on_release: root.go_back()
